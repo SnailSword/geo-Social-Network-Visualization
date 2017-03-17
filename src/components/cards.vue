@@ -1,34 +1,59 @@
 <template>
     <div>
         <el-row>
-            <el-col :span="6"  v-for="(o, index) in 3" :offset="index > 0 ? 1 : 2">
+            <el-col :span="6"  v-for="(o, index) in cards" :offset="index > 0 ? 1 : 2">
                 <el-card :body-style="{ padding: '0px' }">
-                    <img src="../assets/img/cluster.png" class="image">
+                    <img v-if="index==0" src="../assets/img/cluster.png" class="image">
+                    <img v-if="index==1" src="../assets/img/path.png" class="image">
+                    <img v-if="index==2" src="../assets/img/timeline.png" class="image">
                     <div style="padding: 14px;">
-                        <span>活动范围聚类展示</span>
-                            <el-button type="text" class="button" @click="dialogVisible = true">点击查看</el-button>
+                        <span>{{o.title}}</span>
+                            <el-button type="text" class="button" @click="o.dialogVisible = true">点击查看</el-button>
                     </div>
                 </el-card>
             </el-col>
         </el-row>
 
-        <el-dialog v-model="dialogVisible" size="full">
-            <cluster-map></cluster-map>
+        <el-dialog v-for="(card,index) in cards" v-model="card.dialogVisible" size="full">
+            <cluster-map v-if="index==0"></cluster-map>
+            <path-view v-if="index==1"></path-view>
+            <aa v-if="index==2"></aa>
         </el-dialog>
 
     </div>
 </template>
 <script>
-    import ClusterMap from './cluster-map.vue'
+    import PathView from './path-view.vue';
+    import ClusterMap from './cluster-map.vue';
+
     export default {
         data() {
             return {
-                currentDate: new Date(),
-                dialogVisible: false
+                dialogVisible: false,
+                cards: [
+                    {
+                        title: "活动范围聚类展示",
+                        img: "cluster.png",
+                        dialogVisible: false
+                    },
+                    {
+                        title: "活动路径展示",
+                        img: "./assets/img/cluster.png",
+                        dialogVisible: false
+                    },
+                    {
+                        title: "时间轴",
+                        img: "/img/cluster.png",
+                        dialogVisible: false
+                    }
+                ]
             };
         },
         components: {
-            "cluster-map": ClusterMap
+            "cluster-map": ClusterMap,
+            "path-view": PathView
+        },
+        mounted() {
         }
     }
 </script>
