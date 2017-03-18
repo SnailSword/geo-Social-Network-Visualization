@@ -203,7 +203,6 @@ let factory = function(L) {
 
             }
           }
-          console.log(markLine);
         }
         self._ec.setOption(option, notMerge);
       };
