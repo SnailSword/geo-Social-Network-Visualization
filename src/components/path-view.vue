@@ -10,6 +10,7 @@
     let L = require('../dep/leaflet.js');
     require('../dep/leaflet-echarts.js');
     import srcmig from '../assets/data/srcmigration';
+    import usdata from '../assets/data/foo';
     L.echartsLayer = factory(L);
     export default {
         data() {
@@ -198,7 +199,7 @@
             var myChart=overlay.initECharts(chartsContainer);
             window.onresize = myChart.onresize;
 
-            let data = srcmig;
+            let data = usdata;
 
             function getGeoCoord (name) {
                 var city = name.split('_').pop();
@@ -212,18 +213,11 @@
                 })
             }
 
-            data.all_line.forEach((array) => {
-                array.forEach((item) => {
-                    item.reverse();
-                })
-            });
-
-            data.all_line.map(function (array) {
+            data.map(function (array) {
                 for (let i = 0;i<array.length-1;i++) {
                     option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
                 }
             });
-            console.info(option.series[0].markLine.data);
 
 //            option.series[0].markPoint.data = data.topCityOut.map(function (point) {
 //                return {
