@@ -17,7 +17,7 @@
         <el-dialog v-for="(card,index) in cards" v-model="card.dialogVisible" size="full">
             <cluster-map v-if="index==0"></cluster-map>
             <path-view v-if="index==1"></path-view>
-            <aa v-if="index==2"></aa>
+            <multi-path v-if="index==2"></multi-path>
         </el-dialog>
 
     </div>
@@ -25,6 +25,7 @@
 <script>
     import PathView from './path-view.vue';
     import ClusterMap from './cluster-map.vue';
+    import MultiPath from './multi-path.vue';
 
     export default {
         data() {
@@ -51,7 +52,8 @@
         },
         components: {
             "cluster-map": ClusterMap,
-            "path-view": PathView
+            "path-view": PathView,
+            "multi-path": MultiPath
         },
         mounted() {
         }

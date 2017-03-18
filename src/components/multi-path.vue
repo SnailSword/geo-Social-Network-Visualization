@@ -1,5 +1,5 @@
 <template>
-    <div id="main"></div>
+    <div id="multiPath"></div>
 </template>
 
 <script>
@@ -9,7 +9,6 @@
     import '../dep/echarts.source';
     let L = require('../dep/leaflet.js');
     require('../dep/leaflet-echarts.js');
-    import srcmig from '../assets/data/srcmigration';
     L.echartsLayer = factory(L);
     export default {
         data() {
@@ -90,6 +89,7 @@
             }
         },
         mounted() {
+
             var option = {
                 title : {
                     text: '百度迁徙图Leaflet版',
@@ -163,7 +163,7 @@
                     }
                 }]
             }
-            var map = L.map('main');
+            var map = L.map('multiPath');
             var baseLayers = {
                 "高德地图": L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
                     subdomains: "1234"
@@ -208,29 +208,34 @@
                 return coord;
             }
 
-            let data = srcmig;
+            $.ajax({
+                url: 'http://7xp3u9.com1.z0.glb.clouddn.com/srcmigration.json',
+                type:"get",
+                dataType: 'json',
+                success: function(data) {
+                    for(var key in data){
+                        data[key].forEach(function (value, index) {
+                            data[key][index].num=Number(value.num);
+                        })
+                    }
+                    option.series[0].markLine.data = data.allLine.sort(function (a, b) {
+                        return b.num - a.num
+                    }).slice(0, 100).map(function (line) {
+                        return [{
+                            geoCoord: getGeoCoord(line.start)
+                        }, {
+                            geoCoord: getGeoCoord(line.end)
+                        }]
+                    });
 
-            for(var key in data){
-                data[key].forEach(function (value, index) {
-                    data[key][index].num=Number(value.num);
-                })
-            }
-            option.series[0].markLine.data = data.allLine.sort(function (a, b) {
-                return b.num - a.num
-            }).slice(0, 1).map(function (line) {
-                return [{
-                    geoCoord: getGeoCoord(line.start)
-                }, {
-                    geoCoord: getGeoCoord(line.end)
-                }]
-            });
-
-            option.series[0].markPoint.data = data.topCityOut.map(function (point) {
-                return {
-                    geoCoord: getGeoCoord(point.name)
+                    option.series[0].markPoint.data = data.topCityOut.map(function (point) {
+                        return {
+                            geoCoord: getGeoCoord(point.name)
+                        }
+                    });
+                    overlay.setOption(option);
                 }
             });
-            overlay.setOption(option);
         },
         method() {
 
@@ -239,7 +244,7 @@
 </script>
 
 <style lang="sass" rel="stylesheet/scss" scope>
-    #main {
+    #multiPath {
         width: 100%;
         height: 100%;
     }

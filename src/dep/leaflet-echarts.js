@@ -192,12 +192,19 @@ let factory = function(L) {
                 data[k][1].name = k + 'endp';
                 self._geoCoord[data[k][1].name] = data[k][1].geoCoord;
               }
+              // if (!(data[k][2].name && this._geoCoord.hasOwnProperty(data[k][2].name))) {
+              //   data[k][2].name = k + 'endp';
+              //   self._geoCoord[data[k][2].name] = data[k][2].geoCoord;
+              // }
               self._AddPos(data[k][0]);
               self._AddPos(data[k][1]);
+              // self._AddPos(data[k][2]);
+              //TODO
+
             }
           }
+          console.log(markLine);
         }
-
         self._ec.setOption(option, notMerge);
       };
 
