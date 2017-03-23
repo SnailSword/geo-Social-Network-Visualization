@@ -8,7 +8,8 @@
 
 <script>
     import Header from './components/header.vue';
-    import Cards from './components/cards.vue'
+    import Cards from './components/cards.vue';
+
     export default {
       data () {
         return {

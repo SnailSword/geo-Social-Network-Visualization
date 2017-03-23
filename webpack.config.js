@@ -21,7 +21,7 @@ module.exports = (options = {}) => ({
     rules: [{
         test: /\.vue$/,
         use: ['vue-loader']
-    },
+      },
       {
         test: /\.js$/,
         use: ['babel-loader'],
