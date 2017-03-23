@@ -13,7 +13,8 @@
     let L = require('../dep/leaflet.js');
     require('../dep/leaflet-echarts.js');
     import srcmig from '../assets/data/srcmigration';
-    import usdata from '../assets/data/foo';
+//    import usdata from '../assets/data/foo';
+    import usdata from '../assets/data/toolarge';
     L.echartsLayer = factory(L);
     export default {
         data() {
@@ -106,18 +107,9 @@
                     data: []
                 },
                 series : [{
-                    name: "订单流向",
+                    name: "pathview",
                     type: 'map',
                     mapType: 'none',
-//                    itemStyle: {
-//                        normal: {
-//                            borderColor:'rgba(100,149,237,0.2)',
-//                            borderWidth:0.5,
-//                            areaStyle: {
-//                                color: '#1b1b1b'
-//                            }
-//                        }
-//                    },
                     data: [{}],
                     hoverable: false,
                     clickable: false,
@@ -150,18 +142,10 @@
                 }]
             }
             var map = L.map('main');
-
-//            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-//                maxZoom: 18,
-//                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
-//            }).addTo(map);
             L.tileLayer('https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
             }).addTo(map);
-//            var layercontrol = L.control.layers(baseLayers, {
-//                position: "topleft"
-//            }).addTo(map);
             map.setView(L.latLng(37.9, -97.8), 5);
 
             var overlay = new L.echartsLayer(map, echarts);
@@ -169,7 +153,7 @@
             var myChart=overlay.initECharts(chartsContainer);
             window.onresize = myChart.onresize;
             console.log('u' + usdata.length);
-            let data = usdata;
+            let data = usdata.slice(0,1000);
             function getGeoCoord (name) {
                 var city = name.split('_').pop();
                 var coord = geoCoord[city];

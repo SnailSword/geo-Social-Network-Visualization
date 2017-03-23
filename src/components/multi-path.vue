@@ -1,241 +1,220 @@
 <template>
-    <div id="aaaa"></div>
+    <chart :options="multiline"></chart>
 </template>
 
 <script>
-    import 'leaflet/dist/leaflet.css';
     import $ from 'jquery';
-    import factory from '../dep/leaflet-echarts.js';
-    import '../dep/echarts.source';
-    let L = require('../dep/leaflet.js');
-    require('../dep/leaflet-echarts.js');
-    import srcmig from '../assets/data/srcmigration';
-    import usdata from '../assets/data/foo';
-    L.echartsLayer = factory(L);
+    import lines from '../assets/data/lines-bus';
+    import echarts from 'echarts'
+    import ECharts from 'vue-echarts';
+    import bmap from 'echarts/extension/bmap/bmap'
+
     export default {
         data() {
-            return {
-                option: {
-                    title : {
-                        text: '百度迁徙图Leaflet版',
-                        subtext: '-- Develop By WanderGIS',
-                        x:'center',
-                        y:'top',
-                        textStyle: {
-                            color: '#FFC107'
+            var data = lines;
+            var hStep = 300 / (data.length - 1);
+            var busLines = [].concat.apply([], data.map(function (busLine, idx) {
+                var prevPt;
+                var points = [];
+                for (var i = 0; i < busLine.length; i += 2) {
+                    var pt = [busLine[i], busLine[i + 1]];
+                    if (i > 0) {
+                        pt = [
+                            prevPt[0] + pt[0],
+                            prevPt[1] + pt[1]
+                        ];
+                    }
+                    prevPt = pt;
+
+                    points.push([pt[0] / 1e4, pt[1] / 1e4]);
+                }
+                return {
+                    coords: points,
+                    lineStyle: {
+                        normal: {
+                            color: echarts.color.modifyHSL('#5A94DF', Math.round(hStep * idx))
                         }
-                    },
-                    legend: {
-                        show: true,
-                        x: 'right',
-                        orient: 'vertical',
-                        textStyle: {
-                            color: 'red'
-                        },
-                        data: []
-                    },
-                    series : [{
-                        name: "订单流向",
-                        type: 'map',
-                        mapType: 'none',
-                        itemStyle: {
-                            normal: {
-                                borderColor:'rgba(100,149,237,0.2)',
-                                borderWidth:0.5,
-                                areaStyle: {
-                                    color: '#1b1b1b'
-                                }
-                            }
-                        },
-                        data: [{}],
-                        hoverable: false,
-                        clickable: false,
+                    }
+                };
+            }));
+
+            return {
+                multiline: {
+                    bmap: {
+                        center: [116.46, 39.92],
+                        zoom: 10,
                         roam: true,
-                        markLine: {
-                            effect: {
-                                color: 'rgba(204, 246, 255, 0.1)',
-                                show: true,
-                                period: 40
-                            },
-                            bundling: {
-                                enable: true
-                            },
-                            large: true,
-                            smooth: true,
-                            smoothness: 0.1,
-                            symbol: ['none', 'none'],
-                            itemStyle: {
-                                normal: {
-                                    lineStyle: {
-                                        color: 'rgba(2, 166, 253, 0.2)',
-                                        type: 'solid',
-                                        width: 0.5,
-                                        opacity: 0.2
+                        mapStyle: {
+                            'styleJson': [
+                                {
+                                    'featureType': 'water',
+                                    'elementType': 'all',
+                                    'stylers': {
+                                        'color': '#031628'
+                                    }
+                                },
+                                {
+                                    'featureType': 'land',
+                                    'elementType': 'geometry',
+                                    'stylers': {
+                                        'color': '#000102'
+                                    }
+                                },
+                                {
+                                    'featureType': 'highway',
+                                    'elementType': 'all',
+                                    'stylers': {
+                                        'visibility': 'off'
+                                    }
+                                },
+                                {
+                                    'featureType': 'arterial',
+                                    'elementType': 'geometry.fill',
+                                    'stylers': {
+                                        'color': '#000000'
+                                    }
+                                },
+                                {
+                                    'featureType': 'arterial',
+                                    'elementType': 'geometry.stroke',
+                                    'stylers': {
+                                        'color': '#0b3d51'
+                                    }
+                                },
+                                {
+                                    'featureType': 'local',
+                                    'elementType': 'geometry',
+                                    'stylers': {
+                                        'color': '#000000'
+                                    }
+                                },
+                                {
+                                    'featureType': 'railway',
+                                    'elementType': 'geometry.fill',
+                                    'stylers': {
+                                        'color': '#000000'
+                                    }
+                                },
+                                {
+                                    'featureType': 'railway',
+                                    'elementType': 'geometry.stroke',
+                                    'stylers': {
+                                        'color': '#08304b'
+                                    }
+                                },
+                                {
+                                    'featureType': 'subway',
+                                    'elementType': 'geometry',
+                                    'stylers': {
+                                        'lightness': -70
+                                    }
+                                },
+                                {
+                                    'featureType': 'building',
+                                    'elementType': 'geometry.fill',
+                                    'stylers': {
+                                        'color': '#000000'
+                                    }
+                                },
+                                {
+                                    'featureType': 'all',
+                                    'elementType': 'labels.text.fill',
+                                    'stylers': {
+                                        'color': '#857f7f'
+                                    }
+                                },
+                                {
+                                    'featureType': 'all',
+                                    'elementType': 'labels.text.stroke',
+                                    'stylers': {
+                                        'color': '#000000'
+                                    }
+                                },
+                                {
+                                    'featureType': 'building',
+                                    'elementType': 'geometry',
+                                    'stylers': {
+                                        'color': '#022338'
+                                    }
+                                },
+                                {
+                                    'featureType': 'green',
+                                    'elementType': 'geometry',
+                                    'stylers': {
+                                        'color': '#062032'
+                                    }
+                                },
+                                {
+                                    'featureType': 'boundary',
+                                    'elementType': 'all',
+                                    'stylers': {
+                                        'color': '#465b6c'
+                                    }
+                                },
+                                {
+                                    'featureType': 'manmade',
+                                    'elementType': 'all',
+                                    'stylers': {
+                                        'color': '#022338'
+                                    }
+                                },
+                                {
+                                    'featureType': 'label',
+                                    'elementType': 'all',
+                                    'stylers': {
+                                        'visibility': 'off'
                                     }
                                 }
-                            },
-                            data: []
-                        },
-                        markPoint: {
-                            symbol: 'circle',
-                            symbolSize: 1.5,
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgba(255, 0, 0, 0.5)'
-                                }
-                            },
-                            data: []
+                            ]
                         }
+                    },
+                    series: [{
+                        type: 'lines',
+                        coordinateSystem: 'bmap',
+                        polyline: true,
+                        data: busLines,
+                        silent: true,
+                        lineStyle: {
+                            normal: {
+                                // color: '#c23531',
+                                // color: 'rgb(200, 35, 45)',
+                                opacity: 0.2,
+                                width: 1
+                            }
+                        },
+                        progressiveThreshold: 500,
+                        progressive: 200
+                    }, {
+                        type: 'lines',
+                        coordinateSystem: 'bmap',
+                        polyline: true,
+                        data: busLines,
+                        lineStyle: {
+                            normal: {
+                                width: 0
+                            }
+                        },
+                        effect: {
+                            constantSpeed: 20,
+                            show: true,
+                            trailLength: 0.1,
+                            symbolSize: 1.5
+                        },
+                        zlevel: 1
                     }]
                 }
             }
         },
-        mounted() {
-            var option = {
-                legend: {
-                    show: true,
-                    x: 'right',
-                    orient: 'vertical',
-                    textStyle: {
-                        color: 'red'
-                    },
-                    data: []
-                },
-                series : [{
-                    name: "订单流向",
-                    type: 'map',
-                    mapType: 'none',
-                    itemStyle: {
-                        normal: {
-                            borderColor:'rgba(100,149,237,0.2)',
-                            borderWidth:0.5,
-                            areaStyle: {
-                                color: '#1b1b1b'
-                            }
-                        }
-                    },
-                    data: [{}],
-                    hoverable: false,
-                    clickable: false,
-                    roam: true,
-                    markLine: {
-                        effect: {
-                            color: 'rgba(204, 246, 255, 0.1)',
-                            show: true,
-                            period: 40
-                        },
-                        bundling: {
-                            enable: true
-                        },
-                        large: true,
-                        smooth: true,
-                        smoothness: 0.1,
-                        symbol: ['none', 'none'],
-                        itemStyle: {
-                            normal: {
-                                lineStyle: {
-                                    color: 'rgba(2, 166, 253, 0.2)',
-                                    type: 'solid',
-                                    width: 0.5,
-                                    opacity: 0.2
-                                }
-                            }
-                        },
-                        data: []
-                    },
-                    markPoint: {
-                        symbol: 'circle',
-                        symbolSize: 1.5,
-                        itemStyle: {
-                            normal: {
-                                color: 'rgba(255, 0, 0, 0.5)'
-                            }
-                        },
-                        data: []
-                    }
-                }]
-            }
-            var map = L.map('main');
-            var baseLayers = {
-//                "高德地图": L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-//                    subdomains: "1234"
-//                }),
-//                '高德影像': L.layerGroup([L.tileLayer('http://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
-//                    subdomains: "1234"
-//                }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}', {
-//                    subdomains: "1234"
-//                })]),
-//                "立体地图": L.tileLayer('https://a.tiles.mapbox.com/v3/examples.c7d2024a/{z}/{x}/{y}.png', {
-//                    attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                    key: 'BC9A493B41014CAABB98F0471D759707',
-//                    styleId: 22677
-//                }),
-//                "Foursquare": L.tileLayer('https://a.tiles.mapbox.com/v3/foursquare.map-0y1jh28j/{z}/{x}/{y}.png', {
-//                    attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                    key: 'BC9A493B41014CAABB98F0471D759707',
-//                    styleId: 22677
-//                }),
-//                'GeoQ灰色底图': L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map),
-                'osm': L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                    maxZoom: 18,
-                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
-                })
-            };
-//            L.tileLayer('https://a.tiles.mapbox.com/v3/foursquare.map-0y1jh28j/{z}/{x}/{y}.png', {
-//                attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                key: 'BC9A493B41014CAABB98F0471D759707',
-//                styleId: 22677
-//            });
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
-            }).addTo(map);
-//            var layercontrol = L.control.layers(baseLayers, {
-//                position: "topleft"
-//            }).addTo(map);
-            map.setView(L.latLng(25.980263, -80.298851), 4);
-
-            var overlay = new L.echartsLayer(map, echarts);
-            var chartsContainer=overlay.getEchartsContainer();
-            var myChart=overlay.initECharts(chartsContainer);
-            window.onresize = myChart.onresize;
-
-            let data = usdata.splice(0,20);
-
-            function getGeoCoord (name) {
-                var city = name.split('_').pop();
-                var coord = geoCoord[city];
-                return coord;
-            }
-
-            for(var key in data){
-                data[key].forEach(function (value, index) {
-                    data[key][index].num=Number(value.num);
-                })
-            }
-
-            data.map(function (array) {
-                for (let i = 0;i<array.length-1;i++) {
-                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
-                }
-            });
-
-//            option.series[0].markPoint.data = data.topCityOut.map(function (point) {
-//                return {
-//                    geoCoord: getGeoCoord(point.name)
-//                }
-//            });
-            overlay.setOption(option);
+        components: {
+            "chart": ECharts,
         },
-        method() {
-
+        mounted() {
         }
     }
 </script>
 
 <style lang="sass" rel="stylesheet/scss" scope>
-    #main {
-        width: 100%;
-        height: 100%;
+    .echarts {
+        height: 300px;
     }
 </style>

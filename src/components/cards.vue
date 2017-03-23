@@ -3,9 +3,9 @@
         <el-row>
             <el-col :span="6"  v-for="(o, index) in cards" :offset="index > 0 ? 1 : 2">
                 <el-card :body-style="{ padding: '0px' }">
-                    <img v-if="index==0" src="../assets/img/cluster.png" class="image">
-                    <img v-if="index==1" src="../assets/img/path.png" class="image">
-                    <img v-if="index==2" src="../assets/img/timeline.png" class="image">
+                    <img v-if="index==0" src="../assets/img/01.jpg" class="image">
+                    <img v-if="index==1" src="../assets/img/03.jpg" class="image">
+                    <img v-if="index==2" src="../assets/img/05.jpg" class="image">
                     <div style="padding: 14px;">
                         <span>{{o.title}}</span>
                             <el-button type="text" class="button" @click="o.dialogVisible = true">点击查看</el-button>
@@ -54,17 +54,11 @@
             "cluster-map": ClusterMap,
             "path-view": PathView,
             "multi-path": MultiPath
-        },
-        mounted() {
         }
     }
 </script>
 
-<style>
-    .time {
-        font-size: 13px;
-        color: #999;
-    }
+<style lang="sass" rel="stylesheet/scss" scope>
 
     .bottom {
         margin-top: 13px;
@@ -92,4 +86,11 @@
         clear: both
     }
 
+
+    .el-card__body {
+        background-color: #111111;
+        span {
+            color: white;
+        }
+    }
 </style>
