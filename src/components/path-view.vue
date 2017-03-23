@@ -1,5 +1,8 @@
 <template>
-    <div id="main"></div>
+    <div id="container">
+        <div id="main"></div>
+        <el-slider class="number" v-model="number" :max="1000"></el-slider>
+    </div>
 </template>
 
 <script>
@@ -87,7 +90,8 @@
                             data: []
                         }
                     }]
-                }
+                },
+                number: 20
             }
         },
         mounted() {
@@ -105,15 +109,15 @@
                     name: "订单流向",
                     type: 'map',
                     mapType: 'none',
-                    itemStyle: {
-                        normal: {
-                            borderColor:'rgba(100,149,237,0.2)',
-                            borderWidth:0.5,
-                            areaStyle: {
-                                color: '#1b1b1b'
-                            }
-                        }
-                    },
+//                    itemStyle: {
+//                        normal: {
+//                            borderColor:'rgba(100,149,237,0.2)',
+//                            borderWidth:0.5,
+//                            areaStyle: {
+//                                color: '#1b1b1b'
+//                            }
+//                        }
+//                    },
                     data: [{}],
                     hoverable: false,
                     clickable: false,
@@ -122,33 +126,23 @@
                         effect: {
                             color: 'rgba(204, 246, 255, 0.1)',
                             show: true,
-                            period: 40
+                            period: 20
                         },
                         bundling: {
-                            enable: true
+                            enable: false
                         },
                         large: true,
                         smooth: true,
-                        smoothness: 0.1,
+                        smoothness: 1,
                         symbol: ['none', 'none'],
                         itemStyle: {
                             normal: {
                                 lineStyle: {
-                                    color: 'rgba(2, 166, 253, 0.2)',
+                                    color: 'rgba(2, 166, 253, 0.1)',
                                     type: 'solid',
                                     width: 0.5,
-                                    opacity: 0.2
+                                    opacity: 0.8
                                 }
-                            }
-                        },
-                        data: []
-                    },
-                    markPoint: {
-                        symbol: 'circle',
-                        symbolSize: 1.5,
-                        itemStyle: {
-                            normal: {
-                                color: 'rgba(255, 0, 0, 0.5)'
                             }
                         },
                         data: []
@@ -156,52 +150,26 @@
                 }]
             }
             var map = L.map('main');
-            var baseLayers = {
-//                "高德地图": L.tileLayer('http://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
-//                    subdomains: "1234"
-//                }),
-//                '高德影像': L.layerGroup([L.tileLayer('http://webst0{s}.is.autonavi.com/appmaptile?style=6&x={x}&y={y}&z={z}', {
-//                    subdomains: "1234"
-//                }), L.tileLayer('http://t{s}.tianditu.cn/DataServer?T=cta_w&X={x}&Y={y}&L={z}', {
-//                    subdomains: "1234"
-//                })]),
-//                "立体地图": L.tileLayer('https://a.tiles.mapbox.com/v3/examples.c7d2024a/{z}/{x}/{y}.png', {
-//                    attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                    key: 'BC9A493B41014CAABB98F0471D759707',
-//                    styleId: 22677
-//                }),
-//                "Foursquare": L.tileLayer('https://a.tiles.mapbox.com/v3/foursquare.map-0y1jh28j/{z}/{x}/{y}.png', {
-//                    attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                    key: 'BC9A493B41014CAABB98F0471D759707',
-//                    styleId: 22677
-//                }),
-//                'GeoQ灰色底图': L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map),
-                'osm': L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
-            })
-            };
-//            L.tileLayer('https://a.tiles.mapbox.com/v3/foursquare.map-0y1jh28j/{z}/{x}/{y}.png', {
-//                attribution: 'Map &copy; Pacific Rim Coordination Center (PRCC).  Certain data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//                key: 'BC9A493B41014CAABB98F0471D759707',
-//                styleId: 22677
-//            });
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+
+//            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+//                maxZoom: 18,
+//                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
+//            }).addTo(map);
+            L.tileLayer('https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
             }).addTo(map);
 //            var layercontrol = L.control.layers(baseLayers, {
 //                position: "topleft"
 //            }).addTo(map);
-            map.setView(L.latLng(25.980263, -80.298851), 4);
+            map.setView(L.latLng(37.9, -97.8), 5);
 
             var overlay = new L.echartsLayer(map, echarts);
             var chartsContainer=overlay.getEchartsContainer();
             var myChart=overlay.initECharts(chartsContainer);
             window.onresize = myChart.onresize;
-
-            let data = usdata.splice(0,20);
-
+            console.log('u' + usdata.length);
+            let data = usdata;
             function getGeoCoord (name) {
                 var city = name.split('_').pop();
                 var coord = geoCoord[city];
@@ -234,6 +202,16 @@
 </script>
 
 <style lang="sass" rel="stylesheet/scss" scope>
+    #container {
+        width: 100%;
+        height: 100%;
+        .number {
+            position: fixed;
+            width: 300px;
+            left: 10px;
+            bottom: 10px;
+        }
+    }
     #main {
         width: 100%;
         height: 100%;
