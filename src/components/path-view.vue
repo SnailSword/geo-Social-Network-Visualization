@@ -1,7 +1,20 @@
 <template>
     <div id="container">
         <div id="main"></div>
-        <el-slider class="number" v-model="number" :max="1000"></el-slider>
+
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">自定义配置</span>
+                <el-button style="float: right;" type="primary">操作按钮</el-button>
+            </div>
+            <el-slider class="number" v-model="number" :max="5000"></el-slider>
+            <el-switch
+                    v-model="option.series[0].markLine.bundling.enable"
+                    on-text=""
+                    off-text="">
+            </el-switch>
+        </el-card>
+
     </div>
 </template>
 
@@ -16,19 +29,32 @@
 //    import usdata from '../assets/data/foo';
     import usdata from '../assets/data/toolarge';
     L.echartsLayer = factory(L);
+
+    const defaultOption = {
+        NUMBER: 100,
+        BUNDLE: false
+    };
+
+    let pathResult = [];
+    let data = usdata;
+
+    for(var key in data){
+        data[key].forEach(function (value, index) {
+            data[key][index].num=Number(value.num);
+        })
+    }
+
+    data.map(function (array) {
+        for (let i = 0;i<array.length-1;i++) {
+//                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
+            pathResult.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
+        }
+    });
+
     export default {
         data() {
             return {
                 option: {
-                    title : {
-                        text: '百度迁徙图Leaflet版',
-                        subtext: '-- Develop By WanderGIS',
-                        x:'center',
-                        y:'top',
-                        textStyle: {
-                            color: '#FFC107'
-                        }
-                    },
                     legend: {
                         show: true,
                         x: 'right',
@@ -39,18 +65,9 @@
                         data: []
                     },
                     series : [{
-                        name: "订单流向",
+                        name: "pathview",
                         type: 'map',
                         mapType: 'none',
-                        itemStyle: {
-                            normal: {
-                                borderColor:'rgba(100,149,237,0.2)',
-                                borderWidth:0.5,
-                                areaStyle: {
-                                    color: '#1b1b1b'
-                                }
-                            }
-                        },
                         data: [{}],
                         hoverable: false,
                         clickable: false,
@@ -59,128 +76,69 @@
                             effect: {
                                 color: 'rgba(204, 246, 255, 0.1)',
                                 show: true,
-                                period: 40
+                                period: 20
                             },
                             bundling: {
-                                enable: true
+                                enable: defaultOption.BUNDLE
                             },
                             large: true,
                             smooth: true,
-                            smoothness: 0.1,
+                            smoothness: 1,
                             symbol: ['none', 'none'],
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
-                                        color: 'rgba(2, 166, 253, 0.2)',
+                                        color: 'rgba(2, 166, 253, 0.1)',
                                         type: 'solid',
                                         width: 0.5,
-                                        opacity: 0.2
+                                        opacity: 0.8
                                     }
                                 }
                             },
-                            data: []
-                        },
-                        markPoint: {
-                            symbol: 'circle',
-                            symbolSize: 1.5,
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgba(255, 0, 0, 0.5)'
-                                }
-                            },
-                            data: []
+                            data: pathResult.slice(0, defaultOption.NUMBER)
                         }
                     }]
                 },
-                number: 20
+                number: 100,
+                lineData: [],
+                overlay: {},
+                myChart: {}
             }
         },
         mounted() {
-            var option = {
-                legend: {
-                    show: true,
-                            x: 'right',
-                            orient: 'vertical',
-                            textStyle: {
-                        color: 'red'
-                    },
-                    data: []
-                },
-                series : [{
-                    name: "pathview",
-                    type: 'map',
-                    mapType: 'none',
-                    data: [{}],
-                    hoverable: false,
-                    clickable: false,
-                    roam: true,
-                    markLine: {
-                        effect: {
-                            color: 'rgba(204, 246, 255, 0.1)',
-                            show: true,
-                            period: 20
-                        },
-                        bundling: {
-                            enable: false
-                        },
-                        large: true,
-                        smooth: true,
-                        smoothness: 1,
-                        symbol: ['none', 'none'],
-                        itemStyle: {
-                            normal: {
-                                lineStyle: {
-                                    color: 'rgba(2, 166, 253, 0.1)',
-                                    type: 'solid',
-                                    width: 0.5,
-                                    opacity: 0.8
-                                }
-                            }
-                        },
-                        data: []
-                    }
-                }]
-            }
             var map = L.map('main');
             L.tileLayer('https://cartodb-basemaps-b.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
             }).addTo(map);
             map.setView(L.latLng(37.9, -97.8), 5);
-
-            var overlay = new L.echartsLayer(map, echarts);
-            var chartsContainer=overlay.getEchartsContainer();
-            var myChart=overlay.initECharts(chartsContainer);
-            window.onresize = myChart.onresize;
-            console.log('u' + usdata.length);
-            let data = usdata.slice(0,1000);
-            function getGeoCoord (name) {
-                var city = name.split('_').pop();
-                var coord = geoCoord[city];
-                return coord;
-            }
-
-            for(var key in data){
-                data[key].forEach(function (value, index) {
-                    data[key][index].num=Number(value.num);
-                })
-            }
-
-            data.map(function (array) {
-                for (let i = 0;i<array.length-1;i++) {
-                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
-                }
-            });
-
-//            option.series[0].markPoint.data = data.topCityOut.map(function (point) {
-//                return {
-//                    geoCoord: getGeoCoord(point.name)
-//                }
-//            });
-            overlay.setOption(option);
+            this.overlay = new L.echartsLayer(map, echarts);
+            var chartsContainer=this.overlay.getEchartsContainer();
+            this.myChart = this.overlay.initECharts(chartsContainer);
+            window.onresize = this.myChart.onresize;
+            this.overlay.setOption(this.option);
+//            overlay.setOption(option);
         },
-        method() {
-
+        methods:{
+            renderLines(num, time){
+                console.log('a' + pathResult.length);
+                console.log(this.overlay);
+                this.overlay.setOption(this.option);
+            }
+        },
+        watch: {
+            option: {
+                handler: function (value, oldValue) {
+                    if (value < oldValue) {
+                        this.myChart.clear();
+                    }
+                    this.overlay.setOption(value);
+                },
+                deep: true
+            },
+            number: function (val) {
+                this.option.series[0].markLine.data = pathResult.slice(0, val);
+            }
         }
     }
 </script>
@@ -190,14 +148,14 @@
         width: 100%;
         height: 100%;
         .number {
-            position: fixed;
             width: 300px;
-            left: 10px;
-            bottom: 10px;
         }
     }
     #main {
         width: 100%;
         height: 100%;
+    }
+    .box-card {
+        width: 480px;
     }
 </style>
