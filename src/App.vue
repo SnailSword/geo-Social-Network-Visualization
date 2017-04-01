@@ -2,7 +2,11 @@
   <div id="app">
       <el-menu theme="dark" :router="true" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
           <el-menu-item index="/cluster">地点聚类</el-menu-item>
-          <el-menu-item index="/pathview">路径聚类</el-menu-item>
+          <el-submenu index="2">
+              <template slot="title">路径聚类</template>
+              <el-menu-item index="/pathview">原始数据</el-menu-item>
+              <el-menu-item index="/clusterpath">聚类后数据</el-menu-item>
+          </el-submenu>
           <el-menu-item index="/foo">时间轴</el-menu-item>
       </el-menu>
       <router-view></router-view>

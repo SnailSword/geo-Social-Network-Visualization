@@ -19,6 +19,7 @@
             }
         },
         mounted() {
+
             // 不知道为啥默认的icon格式不对 这里fix一下
             var dIcon = L.icon({
                 iconUrl: icon.defaultIcon,
@@ -33,7 +34,13 @@
 
             var map = L.map('map', {center: latlng, zoom: 13, layers: [tiles]});
 
-            var markers = L.markerClusterGroup({ chunkedLoading: true });
+            var markers = L.markerClusterGroup({
+                chunkedLoading: true,
+                spiderLegPolylineOptions: { weight: 5, color: '#222', opacity: 0.5 },
+                singleMarkerMode: true,
+                maxClusterRadius: 100
+            });
+
 
             for (var i = 0; i < addressPoints.length; i++) {
                 var a = addressPoints[i];
@@ -42,6 +49,18 @@
                 marker.bindPopup(title);
                 markers.addLayer(marker);
             }
+
+            markers.on('click', function (a) {
+                console.log('marker');
+                console.info(a.layer);
+            });
+
+            markers.on('clusterclick', function (a) {
+
+                // a.layer is actually a cluster3
+                console.log('cluster ' + a.layer.getAllChildMarkers().length);
+                console.log(a.layer.getAllChildMarkers())
+            });
 
             map.addLayer(markers);
         }

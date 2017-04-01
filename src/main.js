@@ -8,6 +8,7 @@ import cards from './components/cards.vue'
 import temp from './components/temp.vue'
 import PathView from './components/path-view.vue';
 import ClusterMap from './components/cluster-map.vue';
+import ClusterPath from './components/cluster-path.vue';
 
 
 Vue.use(ElementUI);
@@ -19,6 +20,7 @@ const Bar = temp;
 const routes = [
     { path: '/cluster', component: ClusterMap },
     { path: '/pathview', component: PathView },
+    { path: '/clusterpath', component: ClusterPath },
     { path: '/bar', component: Bar }
 ];
 
