@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <el-menu theme="dark" :router="true" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu theme="dark" :router="true" :default-active="activeIndex" class="menu" mode="horizontal" @select="handleSelect">
           <el-menu-item index="/cluster">地点聚类</el-menu-item>
           <el-submenu index="2">
               <template slot="title">路径聚类</template>
@@ -59,8 +59,7 @@
 <style lang="sass" rel="stylesheet/scss">
     @import "./css/font";
     body {
-        font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
-        font-size: 15px;
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         margin: 0;
@@ -85,5 +84,39 @@
     }
     .clearfix:after {
         clear: both
+    }
+
+    .menu {
+        border-radius: 0px;
+    }
+
+    .optionCard {
+        position: fixed;
+        top: 100px;
+        right: 40px;
+        width: 230px;
+        height: 60%;
+        border-radius: 4px;
+        overflow: hidden;
+        .optionHead {
+            height: 35px;
+            width: 100%;
+            color: #eff2f7;
+            vertical-align: middle;
+            line-height: 35px;
+            padding-left: 20px;
+            background-color: #324157;
+            cursor: pointer;
+        }
+        .optionBody {
+            padding: 20px;
+            height: 100%;
+            font-size: 14px;
+            background-color: #EFF2F7;
+            .optionName {
+                margin-right: 10px;
+                line-height: 35px;
+            }
+        }
     }
 </style>

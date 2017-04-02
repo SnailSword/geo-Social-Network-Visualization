@@ -1,13 +1,29 @@
 <template>
     <div id="container">
         <div id="main"></div>
-        <div id="tools">
-            <el-slider class="number" v-model="number" :max="1000"></el-slider>
-            <el-switch
-                    v-model="option.series[0].markLine.bundling.enable"
-                    on-text=""
-                    off-text="">
-            </el-switch>
+        <div id="tools" class="optionCard">
+            <div class="optionHead">自定义配置</div>
+            <div class="optionBody">
+                <span class="optionName">显示路径数：</span>
+                <span>{{number}}</span>
+                <el-slider class="optionNumber" v-model="number" :max="1000"></el-slider>
+                <span class="optionName">边绑定开关</span>
+                <el-switch
+                        v-model="option.series[0].markLine.bundling.enable"
+                        on-text=""
+                        off-text="">
+                </el-switch>
+                <br>
+                <span class="optionName">查看指定日期数据</span>
+                <br>
+                <el-date-picker class="optionData"
+                        size="small"
+                        v-model="value1"
+                        type="date"
+                        placeholder="选择日期"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
+            </div>
         </div>
     </div>
 </template>
@@ -96,6 +112,12 @@
                         }
                     }]
                 },
+                pickerOptions0: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },
+                value1: '',
                 number: 100,
                 lineData: [],
                 overlay: {},
@@ -126,7 +148,7 @@
         watch: {
             option: {
                 handler: function (value, oldValue) {
-                    if (value < oldValue) {
+                    if (value <= oldValue){
                         this.myChart.clear();
                     }
                     this.overlay.setOption(value);
@@ -147,21 +169,15 @@
         .number {
             width: 115px;
         }
-        #tools {
-            width: 200px;
-            height: 300px;
-            border: 1px solid #000;
-            box-shadow: black;
-            border-radius: 4px;
-            background-color: #ffffff;
-            z-index: 100;
-        }
     }
     #main {
         width: 100%;
         height: 100%;
     }
-    .box-card {
-        width: 480px;
+    .optionData {
+        width: 100px;
+    }
+    .optionNumber {
+        margin: -7px 0;
     }
 </style>
