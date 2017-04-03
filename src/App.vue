@@ -10,7 +10,7 @@
           <el-submenu index="3">
               <template slot="title">时间轴</template>
               <el-menu-item index="/timeline">伪时间轴</el-menu-item>
-              <el-menu-item index="/clusterpath">真·时间轴</el-menu-item>
+              <el-menu-item index="/realtimeline">真·时间轴</el-menu-item>
           </el-submenu>
       </el-menu>
       <router-view></router-view>
