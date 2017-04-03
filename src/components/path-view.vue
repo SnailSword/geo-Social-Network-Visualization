@@ -1,20 +1,20 @@
 <template>
     <div id="container">
         <div id="main"></div>
-
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span style="line-height: 36px;">自定义配置</span>
-                <el-button style="float: right;" type="primary">操作按钮</el-button>
+        <div id="tools" class="optionCard">
+            <div class="optionHead">自定义配置</div>
+            <div class="optionBody">
+                <span class="optionName">显示路径数：</span>
+                <el-input-number size="small" :step="100" v-model="number" max="40000"></el-input-number>
+                <br>
+                <span class="optionName">边绑定开关</span>
+                <el-switch
+                        v-model="option.series[0].markLine.bundling.enable"
+                        on-text=""
+                        off-text="">
+                </el-switch>
             </div>
-            <el-slider class="number" v-model="number" :max="5000"></el-slider>
-            <el-switch
-                    v-model="option.series[0].markLine.bundling.enable"
-                    on-text=""
-                    off-text="">
-            </el-switch>
-        </el-card>
-
+        </div>
     </div>
 </template>
 
@@ -26,10 +26,10 @@
     let L = require('../dep/leaflet.js');
     require('../dep/leaflet-echarts.js');
     import srcmig from '../assets/data/srcmigration';
-//    import usdata from '../assets/data/foo';
+    //    import usdata from '../assets/data/foo';
     import usdata from '../assets/data/toolarge';
     L.echartsLayer = factory(L);
-
+    // total path : 49xxx
     const defaultOption = {
         NUMBER: 100,
         BUNDLE: false
@@ -47,7 +47,10 @@
     data.map(function (array) {
         for (let i = 0;i<array.length-1;i++) {
 //                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
-            pathResult.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
+            pathResult.push([
+                {"geoCoord": array[i]},
+                {"geoCoord": array[i + 1]}
+            ]);
         }
     });
 
@@ -75,7 +78,7 @@
                         markLine: {
                             effect: {
                                 color: 'rgba(204, 246, 255, 0.1)',
-                                show: true,
+                                show: false,
                                 period: 20
                             },
                             bundling: {
@@ -88,7 +91,7 @@
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
-                                        color: 'rgba(2, 166, 253, 0.1)',
+                                        color: 'rgba(2, 166, 253, 0.06)',
                                         type: 'solid',
                                         width: 0.5,
                                         opacity: 0.8
@@ -99,6 +102,12 @@
                         }
                     }]
                 },
+                pickerOptions0: {
+                    disabledDate(time) {
+                        return time.getTime() < Date.now() - 8.64e7;
+                    }
+                },
+                value1: '',
                 number: 100,
                 lineData: [],
                 overlay: {},
@@ -111,7 +120,7 @@
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
             }).addTo(map);
-            map.setView(L.latLng(37.9, -97.8), 5);
+            map.setView(L.latLng(38.567941, 50.554019), 2);
             this.overlay = new L.echartsLayer(map, echarts);
             var chartsContainer=this.overlay.getEchartsContainer();
             this.myChart = this.overlay.initECharts(chartsContainer);
@@ -129,9 +138,7 @@
         watch: {
             option: {
                 handler: function (value, oldValue) {
-                    if (value < oldValue) {
-                        this.myChart.clear();
-                    }
+                    this.myChart.clear();
                     this.overlay.setOption(value);
                 },
                 deep: true
@@ -148,14 +155,21 @@
         width: 100%;
         height: 100%;
         .number {
-            width: 300px;
+            width: 115px;
         }
     }
     #main {
         width: 100%;
         height: 100%;
     }
-    .box-card {
-        width: 480px;
+    .optionData {
+        width: 100px;
+    }
+    .optionNumber {
+        margin: -7px 0;
+    }
+    .optionCard {
+        top: 100px;
+        right: 40px;
     }
 </style>

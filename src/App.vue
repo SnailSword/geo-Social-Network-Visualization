@@ -7,7 +7,11 @@
               <el-menu-item index="/pathview">原始数据</el-menu-item>
               <el-menu-item index="/clusterpath">聚类后数据</el-menu-item>
           </el-submenu>
-          <el-menu-item index="/foo">时间轴</el-menu-item>
+          <el-submenu index="3">
+              <template slot="title">时间轴</template>
+              <el-menu-item index="/timeline">伪时间轴</el-menu-item>
+              <el-menu-item index="/clusterpath">真·时间轴</el-menu-item>
+          </el-submenu>
       </el-menu>
       <router-view></router-view>
     <!--<el-button @click.native="startHacking">Let's do it</el-button>-->
@@ -92,8 +96,6 @@
 
     .optionCard {
         position: fixed;
-        top: 100px;
-        right: 40px;
         width: 230px;
         height: 60%;
         border-radius: 4px;
@@ -116,6 +118,14 @@
             .optionName {
                 margin-right: 10px;
                 line-height: 35px;
+            }
+            .radioFix {
+                span:hover {
+                    color: #324157;
+                }
+                span {
+                    box-shadow: -1px 0 0 0 #324157;
+                }
             }
         }
     }
