@@ -1,12 +1,6 @@
 <template>
     <div id="container">
         <div id="main"></div>
-        <div id="tools" class="optionCard left" >
-            <div class="optionHead">自定义配置</div>
-            <div class="optionBody">
-
-            </div>
-        </div>
     </div>
 </template>
 
@@ -14,41 +8,133 @@
     import echarts from 'echarts';
     import $ from 'jquery';
     import '../assets/data/usa.js';
+    import data from '../assets/data/tlData_4';
 
+    let tlOptions = data.map((val, idx) => {
+        return {
+            title: {
+                show: true,
+                'text': idx + ':00'
+            },
+            series: [{
+                data: val
+            }]
+        }
+    });
+    let temp = {
+    0 : 4401,
+    1 : 3613,
+    2 : 2493,
+    3 : 1323,
+    4 : 768,
+    5 : 460,
+    6 : 538,
+    7 : 883,
+    8 : 1645,
+    9 : 2365,
+    10 : 3043,
+    11 : 3596,
+    12 : 3885,
+    13 : 4129,
+    14 : 4043,
+    15 : 3987,
+    16 : 3759,
+    17 : 3864,
+    18 : 4219,
+    19 : 4154,
+    20 : 4507,
+    21 : 5057,
+    22 : 5594,
+    23 : 4885
+    }
     export default {
         data() {
             return {
                 option:{
                     baseOption: {
                         timeline: {
-                            data: ['2002-01-01', '2003-01-01', '2004-01-01'],
+                            data: Array.from(new Array(24), (v,i) => i),
                             show: true,
-                            axisType: 'time',
-                            autoPlay: true
+                            axisType: 'value',
+                            autoPlay: true,
+                            playInterval: 4000,
+                            bottom: 70,
+                            right: 80,
+                            width: 900,
+                            label: {
+                                normal: {
+                                    textStyle: {
+                                        color: '#999'
+                                    }
+                                },
+                                emphasis: {
+                                    textStyle: {
+                                        color: '#fff'
+                                    }
+                                }
+                            },
+                            symbol: 'none',
+                            lineStyle: {
+                                color: '#555'
+                            },
+                            checkpointStyle: {
+                                color: '#bbb',
+                                borderColor: '#777',
+                                borderWidth: 2
+                            },
+                            controlStyle: {
+                                showNextBtn: false,
+                                showPrevBtn: false,
+                                normal: {
+                                    color: '#666',
+                                    borderColor: '#666'
+                                },
+                                emphasis: {
+                                    color: '#aaa',
+                                    borderColor: '#aaa'
+                                }
+                            },
                         },
+                        title: [{
+                            'text': 'aaa',
+                            textAlign: 'center',
+                            left: '36%',
+                            top: '55%',
+                            textStyle: {
+                                fontSize: 100,
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }],
                         backgroundColor: '#003',
                         geo: {
                             map: 'usa',
-                            left: 0,
-                            right: 0,
+//                            left: 0,
+//                            right: 0,
                             silent: true,
                             itemStyle: {
                                 normal: {
                                     borderColor: '#003',
                                     color: '#005'
                                 }
-                            }
+                            },
+//                            left: 0, top: 0, right: 0, bottom: 0,
+//                            boundingCoords: [
+//                                [-130.554145,49.539076],
+//                                [-61.674666,29.752886]
+//                            ],
+                            layoutCenter: ['30%', '20%'],
+                            layoutSize: 1500
                         },
                         series: [
                             {
                                 type: 'scatter',
                                 coordinateSystem: 'geo',
-                                symbolSize: 30,
-                                // large: true,
-                                largeThreshold: 100,
+                                symbolSize: 5,
+//                                large: true,
+//                                largeThreshold: 100,
                                 itemStyle: {
                                     normal: {
-                                        opacity: 0.4
+                                        opacity: 0.45
                                     }
                                 },
                                 // 设置混合模式为叠加
@@ -56,17 +142,7 @@
                             }
                         ]
                     },
-                    options: [
-                        {series: [{
-                            data: [[-107.065971,41.995521],[-116.779744,39.988388]]
-                        }]},
-                        {series: [{
-                            data: [[-106.065971,41.995521],[-117.779744,39.988388]]
-                        }]},
-                        {series: [{
-                            data: [[-105.065971,41.995521],[-115.779744,39.988388]]
-                        }]}
-                    ]
+                    options: tlOptions.slice(0,24)
                 },
                 myChart: {}
             }
