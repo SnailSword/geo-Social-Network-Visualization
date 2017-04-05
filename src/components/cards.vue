@@ -86,11 +86,4 @@
         clear: both
     }
 
-
-    .el-card__body {
-        background-color: #111111;
-        span {
-            color: white;
-        }
-    }
 </style>

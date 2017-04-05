@@ -5,14 +5,24 @@
             <div class="optionHead">自定义配置</div>
             <div class="optionBody">
                 <span class="optionName">显示路径数：</span>
-                <el-input-number size="small" :step="100" v-model="number" max="40000"></el-input-number>
-                <br>
+                <span>{{number}}</span>
+                <el-slider class="optionNumber" v-model="number" :max="1000"></el-slider>
                 <span class="optionName">边绑定开关</span>
                 <el-switch
                         v-model="option.series[0].markLine.bundling.enable"
                         on-text=""
                         off-text="">
                 </el-switch>
+                <br>
+                <span class="optionName">查看指定日期数据</span>
+                <br>
+                <el-date-picker class="optionData"
+                        size="small"
+                        v-model="value1"
+                        type="date"
+                        placeholder="选择日期"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
             </div>
         </div>
     </div>
@@ -26,10 +36,10 @@
     let L = require('../dep/leaflet.js');
     require('../dep/leaflet-echarts.js');
     import srcmig from '../assets/data/srcmigration';
-    //    import usdata from '../assets/data/foo';
+//    import usdata from '../assets/data/foo';
     import usdata from '../assets/data/toolarge';
     L.echartsLayer = factory(L);
-    // total path : 49xxx
+
     const defaultOption = {
         NUMBER: 100,
         BUNDLE: false
@@ -48,9 +58,9 @@
         for (let i = 0;i<array.length-1;i++) {
 //                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
             pathResult.push([
-                {"geoCoord": array[i]},
-                {"geoCoord": array[i + 1]}
-            ]);
+                    {"geoCoord": array[i]},
+                    {"geoCoord": array[i + 1]}
+                ]);
         }
     });
 
@@ -78,7 +88,7 @@
                         markLine: {
                             effect: {
                                 color: 'rgba(204, 246, 255, 0.1)',
-                                show: false,
+                                show: true,
                                 period: 20
                             },
                             bundling: {
@@ -91,7 +101,7 @@
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
-                                        color: 'rgba(2, 166, 253, 0.06)',
+                                        color: 'rgba(2, 166, 253, 0.1)',
                                         type: 'solid',
                                         width: 0.5,
                                         opacity: 0.8
@@ -99,16 +109,6 @@
                                 }
                             },
                             data: pathResult.slice(0, defaultOption.NUMBER)
-                        },
-                        markPoint: {
-                            symbol: 'circle',
-                            symbolSize: 1.5,
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgba(255, 0, 0, 0.5)'
-                                }
-                            },
-                            data: []
                         }
                     }]
                 },
@@ -130,12 +130,13 @@
                 maxZoom: 18,
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Points &copy 2017'
             }).addTo(map);
-            map.setView(L.latLng(38.567941, 50.554019), 2);
+            map.setView(L.latLng(37.9, -97.8), 5);
             this.overlay = new L.echartsLayer(map, echarts);
             var chartsContainer=this.overlay.getEchartsContainer();
             this.myChart = this.overlay.initECharts(chartsContainer);
             window.onresize = this.myChart.onresize;
             this.overlay.setOption(this.option);
+
 //            overlay.setOption(option);
         },
         methods:{
@@ -148,7 +149,9 @@
         watch: {
             option: {
                 handler: function (value, oldValue) {
-                    this.myChart.clear();
+                    if (value <= oldValue){
+                        this.myChart.clear();
+                    }
                     this.overlay.setOption(value);
                 },
                 deep: true
@@ -172,14 +175,14 @@
         width: 100%;
         height: 100%;
     }
+    .optionCard {
+        top: 100px;
+        right: 40px;
+    }
     .optionData {
         width: 100px;
     }
     .optionNumber {
         margin: -7px 0;
-    }
-    .optionCard {
-        top: 100px;
-        right: 40px;
     }
 </style>
