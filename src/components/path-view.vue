@@ -99,6 +99,16 @@
                                 }
                             },
                             data: pathResult.slice(0, defaultOption.NUMBER)
+                        },
+                        markPoint: {
+                            symbol: 'circle',
+                            symbolSize: 1.5,
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(255, 0, 0, 0.5)'
+                                }
+                            },
+                            data: []
                         }
                     }]
                 },

@@ -3,9 +3,10 @@
       <el-menu theme="dark" :router="true" :default-active="activeIndex" class="menu" mode="horizontal" @select="handleSelect">
           <el-menu-item index="/cluster">地点聚类</el-menu-item>
           <el-submenu index="2">
-              <template slot="title">路径聚类</template>
+              <template slot="title">路径可视化</template>
               <el-menu-item index="/pathview">原始数据</el-menu-item>
               <el-menu-item index="/clusterpath">聚类后数据</el-menu-item>
+              <el-menu-item index="/fitting">与实际拟合</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
               <template slot="title">时间轴</template>

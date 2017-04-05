@@ -10,43 +10,45 @@
     import '../assets/data/usa.js';
     import data from '../assets/data/tlData_4';
 
+    let temp = {
+        0 : 4401,
+        1 : 3613,
+        2 : 2493,
+        3 : 1323,
+        4 : 768,
+        5 : 460,
+        6 : 538,
+        7 : 883,
+        8 : 1645,
+        9 : 2365,
+        10 : 3043,
+        11 : 3596,
+        12 : 3885,
+        13 : 4129,
+        14 : 4043,
+        15 : 3987,
+        16 : 3759,
+        17 : 3864,
+        18 : 4219,
+        19 : 4154,
+        20 : 4507,
+        21 : 5057,
+        22 : 5594,
+        23 : 4885
+    }
+
     let tlOptions = data.map((val, idx) => {
         return {
             title: {
                 show: true,
-                'text': idx + ':00'
+                'text': idx < 10 ? '0' + idx + ':00' : idx + ':00',
+                subtext: '签到人次：' + temp[idx]
             },
             series: [{
                 data: val
             }]
         }
     });
-    let temp = {
-    0 : 4401,
-    1 : 3613,
-    2 : 2493,
-    3 : 1323,
-    4 : 768,
-    5 : 460,
-    6 : 538,
-    7 : 883,
-    8 : 1645,
-    9 : 2365,
-    10 : 3043,
-    11 : 3596,
-    12 : 3885,
-    13 : 4129,
-    14 : 4043,
-    15 : 3987,
-    16 : 3759,
-    17 : 3864,
-    18 : 4219,
-    19 : 4154,
-    20 : 4507,
-    21 : 5057,
-    22 : 5594,
-    23 : 4885
-    }
     export default {
         data() {
             return {
@@ -97,11 +99,12 @@
                         },
                         title: [{
                             'text': 'aaa',
-                            textAlign: 'center',
-                            left: '36%',
-                            top: '55%',
+                            subtext: 'aaa',
+                            textAlign: 'right',
+                            left: '46%',
+                            top: '60%',
                             textStyle: {
-                                fontSize: 100,
+                                fontSize: 60,
                                 color: 'rgba(255, 255, 255, 0.7)'
                             }
                         }],
@@ -130,6 +133,7 @@
                                 type: 'scatter',
                                 coordinateSystem: 'geo',
                                 symbolSize: 5,
+                                hoverAnimation: false,
 //                                large: true,
 //                                largeThreshold: 100,
                                 itemStyle: {

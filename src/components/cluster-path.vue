@@ -58,8 +58,8 @@
         for (let i = 0;i<array.length-1;i++) {
 //                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
             pathResult.push([
-                    {"geoCoord": array[i].map((a) => Math.round(a))},
-                    {"geoCoord": array[i + 1].map((a) => Math.round(a))}
+                    {"geoCoord": array[i]},
+                    {"geoCoord": array[i + 1]}
                 ]);
         }
     });
@@ -136,6 +136,7 @@
             this.myChart = this.overlay.initECharts(chartsContainer);
             window.onresize = this.myChart.onresize;
             this.overlay.setOption(this.option);
+
 //            overlay.setOption(option);
         },
         methods:{
