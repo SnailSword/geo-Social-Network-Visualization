@@ -31,7 +31,7 @@
     L.echartsLayer = factory(L);
     // total path : 49xxx
     const defaultOption = {
-        NUMBER: 100,
+        NUMBER: 1000,
         BUNDLE: false
     };
 
@@ -91,7 +91,7 @@
                             itemStyle: {
                                 normal: {
                                     lineStyle: {
-                                        color: 'rgba(2, 166, 253, 0.06)',
+                                        color: 'rgba(2, 166, 253, 0.1)',
                                         type: 'solid',
                                         width: 0.5,
                                         opacity: 0.8
@@ -99,17 +99,17 @@
                                 }
                             },
                             data: pathResult.slice(0, defaultOption.NUMBER)
-                        },
-                        markPoint: {
-                            symbol: 'circle',
-                            symbolSize: 1.5,
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgba(255, 0, 0, 0.5)'
-                                }
-                            },
-                            data: []
                         }
+//                        markPoint: {
+//                            symbol: 'circle',
+//                            symbolSize: 1.5,
+//                            itemStyle: {
+//                                normal: {
+//                                    color: 'rgba(255, 0, 0, 0.5)'
+//                                }
+//                            },
+//                            data: []
+//                        }
                     }]
                 },
                 pickerOptions0: {
@@ -118,7 +118,7 @@
                     }
                 },
                 value1: '',
-                number: 100,
+                number: defaultOption.NUMBER,
                 lineData: [],
                 overlay: {},
                 myChart: {}

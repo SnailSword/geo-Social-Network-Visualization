@@ -77,6 +77,16 @@
             return {
                 option: {
                     backgroundColor: '#003',
+                    title: [{
+                        'text': '行程轨迹动态模拟',
+                        left: '50%',
+                        top: 20,
+                        textAlign: 'center',
+                        textStyle: {
+                            fontSize: 30,
+                            color: 'rgba(255, 255, 255, 0.7)'
+                        }
+                    }],
                     geo: {
                         map: 'usa',
 //                        map: 'world',
