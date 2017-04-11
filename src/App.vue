@@ -7,6 +7,7 @@
               <el-menu-item index="/pathview">原始数据</el-menu-item>
               <el-menu-item index="/clusterpath">聚类后数据</el-menu-item>
               <el-menu-item index="/fitting">与实际拟合</el-menu-item>
+              <el-menu-item index="/pathtimeline">路径选择器</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
               <template slot="title">时间轴</template>

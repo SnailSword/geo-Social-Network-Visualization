@@ -54,14 +54,19 @@
 //            data[key][index].num=Number(value.num);
 //        })
 //    }
-
+//    clusterCenter.forEach((a, i) => {
+//        if([3, 13, 21, 22, 31, 40, 44].indexOf(i) > -1) {
+//            console.log(a);
+//        }
+//    });
     data.map(function (array) {
         for (let i = 0;i<array.length-1;i++) {
 //                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
-            if (array[i] in [3, 13, 21, 31, 39, 43]){
+            if (array[i] in [3, 13, 21, 22, 31, 40, 44]){
                 continue
             }
-            if (array[i + 1] in [3, 13, 21, 31, 39, 43]){
+            if (array[i + 1] in [3, 13, 21, 22, 31, 40, 44]){
+
                 continue
             }
             pathResult.push([

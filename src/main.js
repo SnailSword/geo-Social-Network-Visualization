@@ -10,6 +10,7 @@ import ClusterPath from './components/cluster-path.vue';
 import TimeLine from './components/time-line.vue'
 import RealTimeLine from './components/real-time-line.vue'
 import Fitting from './components/fitting.vue'
+import PathTimeLine from './components/path-time-line.vue'
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);
@@ -20,6 +21,7 @@ const routes = [
     { path: '/clusterpath', component: ClusterPath },
     { path: '/timeline', component: TimeLine },
     { path: '/fitting', component: Fitting },
+    { path: '/pathtimeline', component: PathTimeLine },
     { path: '/realtimeline', component: RealTimeLine }
 ];
 
