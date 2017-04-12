@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+      <img id="svaLogo" src="./assets/img/sva-logo.png" alt="">
       <el-menu theme="dark" :router="true" :default-active="activeIndex" class="menu" mode="horizontal" @select="handleSelect">
           <el-menu-item index="/cluster">地点聚类</el-menu-item>
           <el-submenu index="2">
@@ -7,6 +8,7 @@
               <el-menu-item index="/pathview">原始数据</el-menu-item>
               <el-menu-item index="/clusterpath">聚类后数据</el-menu-item>
               <el-menu-item index="/fitting">与实际拟合</el-menu-item>
+              <el-menu-item index="/pathtimeline">路径选择器</el-menu-item>
           </el-submenu>
           <el-submenu index="3">
               <template slot="title">时间轴</template>
@@ -129,5 +131,13 @@
                 }
             }
         }
+    }
+
+    #svaLogo {
+        position: fixed;
+        top:0px;
+        right: 0px;
+        z-index: 99;
+        height: 60px;
     }
 </style>

@@ -37,7 +37,7 @@
     require('../dep/leaflet-echarts.js');
     import srcmig from '../assets/data/srcmigration';
 //    import usdata from '../assets/data/foo';
-    import usdata from '../assets/data/toolarge';
+    import usdata from '../assets/data/cluster_path_data';
     L.echartsLayer = factory(L);
 
     const defaultOption = {
@@ -46,23 +46,36 @@
     };
 
     let pathResult = [];
-    let data = usdata;
+    let data = Object.values(usdata.data);
+    let clusterCenter = usdata.data_cluster;
 
-    for(var key in data){
-        data[key].forEach(function (value, index) {
-            data[key][index].num=Number(value.num);
-        })
-    }
-
+//    for(var key in data){
+//        data[key].forEach(function (value, index) {
+//            data[key][index].num=Number(value.num);
+//        })
+//    }
+//    clusterCenter.forEach((a, i) => {
+//        if([3, 13, 21, 22, 31, 40, 44].indexOf(i) > -1) {
+//            console.log(a);
+//        }
+//    });
     data.map(function (array) {
         for (let i = 0;i<array.length-1;i++) {
 //                    option.series[0].markLine.data.push([{"geoCoord": array[i]}, {"geoCoord": array[i + 1]}]);
+            if (array[i] in [3, 13, 21, 22, 31, 40, 44]){
+                continue
+            }
+            if (array[i + 1] in [3, 13, 21, 22, 31, 40, 44]){
+
+                continue
+            }
             pathResult.push([
-                    {"geoCoord": array[i]},
-                    {"geoCoord": array[i + 1]}
+                    {"geoCoord": clusterCenter[array[i]]},
+                    {"geoCoord": clusterCenter[array[i + 1]]}
                 ]);
         }
     });
+
 
     export default {
         data() {
