@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import App from './App.vue'
+import Home from './components/home.vue';
 import PathView from './components/path-view.vue';
 import ClusterMap from './components/cluster-map.vue';
 import ClusterPath from './components/cluster-path.vue';
@@ -16,6 +17,8 @@ Vue.use(ElementUI);
 Vue.use(VueRouter);
 
 const routes = [
+    { path: '/', redirect: '/home' },
+    { path: '/home', component: Home },
     { path: '/cluster', component: ClusterMap },
     { path: '/pathview', component: PathView },
     { path: '/clusterpath', component: ClusterPath },
@@ -28,7 +31,6 @@ const routes = [
 const router = new VueRouter({
     routes
 });
-
 
 new Vue({
     el: '#app',

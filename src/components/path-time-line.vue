@@ -7,6 +7,7 @@
                 <span class="optionName">查看指定日期数据</span>
                 <br>
                 <el-date-picker
+                        id="ptldPiacker"
                         size="small"
                         v-model="currentDate"
                         type="daterange"
@@ -14,6 +15,8 @@
                         :picker-options="DatePickerOptions"
                         placeholder="选择日期范围">
                 </el-date-picker>
+                <br>
+                <span class="optionName">查看指定用户数据</span>
                 <el-select :disabled="selectAll" size="small" :multiple="true" v-model="currentUsers" filterable placeholder="选择用户ID">
                     <el-option
                             v-for="item in users"
@@ -230,10 +233,8 @@
         top: 100px;
         left: 40px;
     }
-    .optionData {
-        width: 100px;
-    }
-    .optionNumber {
-        margin: -7px 0;
+    #ptldPiacker {
+        width: 150px;
+        margin-bottom: 12px;
     }
 </style>
